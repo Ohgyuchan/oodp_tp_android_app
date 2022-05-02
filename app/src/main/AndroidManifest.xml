@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Oodp_tp_app">
         <activity
-            android:name=".SignInActivity"
+            android:name=".activity.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/main"
             android:exported="true">
 
