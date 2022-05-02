@@ -1,10 +1,13 @@
 package com.example.oodp_tp_app.classes;
 
+import java.util.ArrayList;
+
 public class Member {
     private String uid;
     private String email;
     private String displayName;
     private String photoUrl;
+    private ArrayList<Project> projects;
 
     public String getUid() {
         return uid;
@@ -36,6 +39,14 @@ public class Member {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public ArrayList<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(ArrayList<Project> projects) {
+        this.projects = projects;
     }
 
     public Member(){}

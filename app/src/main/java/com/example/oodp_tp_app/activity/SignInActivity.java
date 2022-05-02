@@ -93,7 +93,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         member.put("email", user.getEmail().toString());
                         member.put("displayName", user.getDisplayName().toString());
                         member.put("photoUrl", user.getPhotoUrl().toString());
-                        db.collection("Users").document("123").set(member);
+                        db.collection("Users").document(user.getUid()).set(member);
                     }
                     Toast.makeText(SignInActivity.this, "로그인 성공",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
