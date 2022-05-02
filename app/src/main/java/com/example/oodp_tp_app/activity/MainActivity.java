@@ -3,6 +3,8 @@ package com.example.oodp_tp_app.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +16,23 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.oodp_tp_app.R;
+import com.example.oodp_tp_app.classes.Member;
+import com.example.oodp_tp_app.classes.Project;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_name;
     private ImageView iv_profile;
     private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<Project> projects;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
         tv_name = findViewById(R.id.user_name);
         tv_name.setText(nickName);
-
         iv_profile = findViewById(R.id.user_photo);
         Glide.with(this).load(photoUrl).into(iv_profile);
+
+        recyclerView = findViewById(R.id.project_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        projects = new ArrayList<>();
+
+
     }
 
     @Override
