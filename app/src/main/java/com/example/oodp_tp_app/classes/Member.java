@@ -1,6 +1,6 @@
-package com.example.oodp_tp_app;
+package com.example.oodp_tp_app.classes;
 
-public class User {
+public class Member {
     private String uid;
     private String email;
     private String displayName;
@@ -38,5 +38,5 @@ public class User {
         this.photoUrl = photoUrl;
     }
 
-    public User(){}
+    public Member(){}
 }

@@ -1,4 +1,4 @@
-package com.example.oodp_tp_app;
+package com.example.oodp_tp_app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.oodp_tp_app.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -23,6 +24,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -30,6 +35,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private SignInButton btn_google;
     private FirebaseAuth auth;
     private GoogleApiClient googleApiClient;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +85,18 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
                 if(task.isSuccessful()) {
+                    if(task.getResult().getAdditionalUserInfo().isNewUser()) {
+                        FirebaseUser user = task.getResult().getUser();
+                        Map<String, Object> member = new HashMap<>();
+                        member.put("uid", user.getUid());
+                        member.put("email", user.getEmail());
+                        member.put("displayName", user.getDisplayName());
+                        member.put("photoUrl", user.getPhotoUrl());
+
+                        db.collection("users").document(user.getUid()).set(member);
+                    }
                     Toast.makeText(SignInActivity.this, "로그인 성공",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("nickName", account.getDisplayName());
