@@ -9,6 +9,9 @@ public abstract class Task {
     private ArrayList<Comment> comments;
     private Date dueDate;
 
+    public Task() {
+    }
+
     public void stateUpdate() {
 
     }
