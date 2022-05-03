@@ -22,8 +22,10 @@ import com.example.oodp_tp_app.classes.Leader;
 import com.example.oodp_tp_app.classes.Member;
 import com.example.oodp_tp_app.classes.Project;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -75,20 +77,47 @@ public class MainActivity extends AppCompatActivity {
         projectCollection = db.collection("Projects");
         userCollection = db.collection("Users");
 
-        projectCollection.get().addOnCompleteListener(task -> {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        projectCollection.whereArrayContains("members", currentUser.getUid()).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 for(QueryDocumentSnapshot projectSnapshot : task.getResult()) {
-                    Map<String, Object> data = projectSnapshot.getData();
+                    Leader leader = new Leader();
+                    ArrayList<Member> members = new ArrayList<>();
+                    userCollection.document((String) projectSnapshot.get("leader")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot leaderSnapshot) {
+                                Leader kLeader = new Leader(leaderSnapshot.getId(), (String) leaderSnapshot.get("email"), (String) leaderSnapshot.get("displayName"), (String) leaderSnapshot.get("photoUrl"));
+                                leader.setUid(kLeader.getUid());
+                                leader.setEmail(kLeader.getEmail());
+                                leader.setPhotoUrl(kLeader.getPhotoUrl());
+                                leader.setDisplayName(kLeader.getDisplayName());
+                                Log.d("Leader Read", leader.getDisplayName() + " => " + leader.getUid());
 
-                    Project project = new Project();
-                    project.setProjectName((String) data.get("projectName"));
-                    project.setMembersFromStringList((ArrayList<String>) data.get("members"));
-                    project.setLeaderFromString((String) data.get("leader"));
+                        }
+                    });
+                    userCollection.whereArrayContains("projects", projectSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()) {
+                                for (QueryDocumentSnapshot memberSnapshot : task.getResult()) {
+                                    Member member = new Member(memberSnapshot.getId(), (String) memberSnapshot.get("email"), (String) memberSnapshot.get("displayName"), (String) memberSnapshot.get("photoUrl"));
+                                    members.add(member);
+                                    Log.d("Member Read", members + " => " + members.size());
+                                }
 
+                            } else {
+                                Log.d("Members Read", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+                    Project project = new Project(projectSnapshot.getId(), (String) projectSnapshot.get("projectName"), members, leader);
                     projects.add(project);
+
                     Log.d("Projects Read::", projectSnapshot.getId() + " => " + projectSnapshot.getData());
                     System.out.println("Projects Read:: projectName => " + project.getProjectName());
-                    System.out.println("Projects Read:: leader => " + project.getLeader());
+                    System.out.println("Projects Read:: leader => " + project.getLeader().getDisplayName());
                     System.out.println("Projects Read:: members() => " + project.getMembers());
 
                 }

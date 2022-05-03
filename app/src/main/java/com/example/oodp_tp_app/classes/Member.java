@@ -17,18 +17,8 @@ public class Member {
     private String email;
     private String displayName;
     private String photoUrl;
-    private ArrayList<Project> projects;
 
     public Member() {
-
-    }
-
-    public Member(String uid, String email, String displayName, String photoUrl, ArrayList<Project> projects) {
-        this.uid = uid;
-        this.email = email;
-        this.displayName = displayName;
-        this.photoUrl = photoUrl;
-        this.projects = projects;
     }
 
     public Member(String uid, String email, String displayName, String photoUrl) {
@@ -36,7 +26,6 @@ public class Member {
         this.email = email;
         this.displayName = displayName;
         this.photoUrl = photoUrl;
-        this.projects = new ArrayList<>();
     }
 
     public String getUid() {
@@ -72,31 +61,21 @@ public class Member {
         this.photoUrl = photoUrl;
     }
 
-    public ArrayList<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(ArrayList<Project> projects) {
-        this.projects = projects;
-    }
-
-    public void setProjectsFromStringList(ArrayList<String> projects) {
-        ArrayList<Project> projectArrayList = new ArrayList<>();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        for(String project : projects){
-            db.collection("Projects").document(project).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Map<String, Object> data = documentSnapshot.getData();
-                    Project kProject = new Project();
-                    assert data != null;
-                    kProject.setProjectName((String) data.get("projectName"));
-                    kProject.setLeaderFromString((String) data.get("leader"));
-                    kProject.setMembersFromStringList((ArrayList<String>) data.get("members"));
-                    projectArrayList.add(kProject);
-                }
-            });
-        }
-        setProjects(projectArrayList);
-    }
+//    public void setProjectsFromStringList(ArrayList<String> projects) {
+//        ArrayList<Project> projectArrayList = new ArrayList<>();
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        for(String project : projects){
+//            db.collection("Projects").document(project).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                @Override
+//                public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                    if(documentSnapshot.exists()) {
+//                        Map<String, Object> data = documentSnapshot.getData();
+//                        Project kProject = new Project((String) data.get("projectName"), (ArrayList<String>) data.get("members"), (String) data.get("leader"));
+//                        projectArrayList.add(kProject);
+//                    }
+//                }
+//            });
+//        }
+////        setProjects(projectArrayList);
+//    }
 }
