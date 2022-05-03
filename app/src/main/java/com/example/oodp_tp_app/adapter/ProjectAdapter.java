@@ -1,5 +1,6 @@
 package com.example.oodp_tp_app.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,11 @@ import java.util.ArrayList;
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
 
     private ArrayList<Project> projects;
+    private Context context;
 
-    public ProjectAdapter(ArrayList<Project> projects) {
+    public ProjectAdapter(ArrayList<Project> projects, Context context) {
         this.projects = projects;
+        this.context = context;
     }
 
     @NonNull
@@ -34,7 +37,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         holder.tv_project_name.setText(projects.get(position).getProjectName());
         holder.tv_leader_name.setText(projects.get(position).getLeader().getDisplayName());
-        holder.tv_member_count.setText(projects.get(position).getMembersCount());
+        holder.tv_member_count.setText(String.valueOf(projects.get(position).getMembersCount()));
     }
 
     @Override

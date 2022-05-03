@@ -5,6 +5,10 @@ import java.util.ArrayList;
 public class MainTask extends Task{
     private ArrayList<SubTask> subTasks;
     private ArrayList<Meeting> meetings;
+
+    public MainTask() {
+    }
+
     @Override
     public void edit() {
         super.edit();
