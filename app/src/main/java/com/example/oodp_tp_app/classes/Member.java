@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Member {
     private String uid;
@@ -79,13 +80,19 @@ public class Member {
         this.projects = projects;
     }
 
-    public void setProjectsFromString(ArrayList<String> projects) {
+    public void setProjectsFromStringList(ArrayList<String> projects) {
         ArrayList<Project> projectArrayList = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         for(String project : projects){
-            FirebaseFirestore.getInstance().collection("Projects").document(project).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            db.collection("Projects").document(project).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Project kProject = documentSnapshot.toObject(Project.class);
+                    Map<String, Object> data = documentSnapshot.getData();
+                    Project kProject = new Project();
+                    assert data != null;
+                    kProject.setProjectName((String) data.get("projectName"));
+                    kProject.setLeaderFromString((String) data.get("leader"));
+                    kProject.setMembersFromStringList((ArrayList<String>) data.get("members"));
                     projectArrayList.add(kProject);
                 }
             });

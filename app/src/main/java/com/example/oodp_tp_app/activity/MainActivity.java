@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,30 +78,13 @@ public class MainActivity extends AppCompatActivity {
         projectCollection.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 for(QueryDocumentSnapshot projectSnapshot : task.getResult()) {
-                    Leader leader = new Leader();
-                    ArrayList<Member> members = new ArrayList<>();
-                    userCollection.document("YV3PC3ttr3hTUe8YdMikcjqD37W2").get().addOnCompleteListener(task1 -> {
-                        if(task1.isSuccessful()) {
-                            DocumentSnapshot leaderSnapshot = task1.getResult();
-                            Leader leader1 = leaderSnapshot.toObject(Leader.class);
-                            leader.setUid(leader1.getUid());
-                            leader.setEmail(leader1.getEmail());
-                            leader.setDisplayName(leader1.getDisplayName());
-                            leader.setPhotoUrl(leader1.getPhotoUrl());
-                            leader.setProjects(leader1.getProjects());
-                            System.out.println("Leader:: " + leaderSnapshot.getData());
-                        }
-                    });
+                    Map<String, Object> data = projectSnapshot.getData();
 
-                    userCollection.whereArrayContains("uid", (ArrayList<String>) projectSnapshot.get("members")).get().addOnCompleteListener(task12 -> {
-                             if(task12.isSuccessful()) {
-                                 for (QueryDocumentSnapshot memberSnapshot : task12.getResult()) {
-                                     Member member = memberSnapshot.toObject(Member.class);
-                                     members.add(member);
-                                 }
-                             }
-                    });
-                    Project project = new Project(Objects.requireNonNull(projectSnapshot.get("projectName")).toString(), members, leader);
+                    Project project = new Project();
+                    project.setProjectName((String) data.get("projectName"));
+                    project.setMembersFromStringList((ArrayList<String>) data.get("members"));
+                    project.setLeaderFromString((String) data.get("leader"));
+
                     projects.add(project);
                     Log.d("Projects Read::", projectSnapshot.getId() + " => " + projectSnapshot.getData());
                     System.out.println("Projects Read:: projectName => " + project.getProjectName());
