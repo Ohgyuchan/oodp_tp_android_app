@@ -9,8 +9,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Project {
+    private String projectId;
     private String projectName;
     private ArrayList<Member> members;
     private Leader leader;
@@ -19,10 +21,19 @@ public class Project {
 
     }
 
-    public Project(String projectName, ArrayList<Member> members, Leader leader) {
+    public Project(String projectId, String projectName, ArrayList<Member> members, Leader leader) {
+        this.projectId = projectId;
         this.projectName = projectName;
         this.members = members;
         this.leader = leader;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
     public String getProjectName() {
@@ -53,28 +64,37 @@ public class Project {
         this.leader = leader;
     }
 
-    public void setLeader(String leader) {
-        final Leader[] kLeader = new Leader[1];
-        FirebaseFirestore.getInstance().collection("Users").document(leader).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                kLeader[0] = documentSnapshot.toObject(Leader.class);
-            }
-        });
-        setLeader(kLeader[0]);
-    }
+//    public void setLeaderFromString(String leader) {
+//        ArrayList<Leader> leaderArrayList = new ArrayList<>();
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("Users").document(leader).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                Map<String, Object> data = documentSnapshot.getData();
+//                Leader kLeader = new Leader((String) data.get("uid"), (String) data.get("email"), (String) data.get("displayName"),(String) data.get("photoUrl"), (ArrayList<String>) data.get("projects"));
+//                leaderArrayList.add(kLeader);
+//            }
+//        });
+////        setLeader(leaderArrayList.get(0));
+//    }
 
-    public void setMembersFromString(ArrayList<String> members) {
-        ArrayList<Member> memberArrayList = new ArrayList<>();
-        for(String member : members){
-            FirebaseFirestore.getInstance().collection("Users").document(member).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Member kMember = documentSnapshot.toObject(Member.class);
-                    memberArrayList.add(kMember);
-                }
-            });
-        }
-        setMembers(memberArrayList);
-    }
+//    public ArrayList<Member> getMembersFromStringList(ArrayList<String> members) {
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        ArrayList<Member> memberArrayList = new ArrayList<>();
+//        for(String member : members){
+//            System.out.println(member);
+//            db.collection("Users").document(member).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    if(task.isSuccessful()) {
+//                        DocumentSnapshot documentSnapshot = task.getResult();
+//                        Map<String, Object> data = documentSnapshot.getData();
+//                        Member kMember = new Member((String) data.get("uid"), (String) data.get("email"), (String) data.get("displayName"),(String) data.get("photoUrl"), (ArrayList<String>) data.get("projects"));
+//                        memberArrayList.add(kMember);
+//                    }
+//                }
+//            });
+//        }
+//        return memberArrayList;
+//    }
 }

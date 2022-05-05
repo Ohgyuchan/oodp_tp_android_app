@@ -49,11 +49,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         FirebaseUser user = auth.getCurrentUser();
 
         if(user != null) {
-                Toast.makeText(SignInActivity.this, "로그인 성공",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("nickName", user.getDisplayName());
-                intent.putExtra("photoUrl", user.getPhotoUrl().toString());
-                startActivity(intent);
+            Toast.makeText(SignInActivity.this, "로그인 성공",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("nickName", user.getDisplayName());
+            intent.putExtra("photoUrl", user.getPhotoUrl().toString());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);//액티비티 스택제거
+            startActivity(intent);
         }
 
         btn_google = findViewById(R.id.btn_sign);
@@ -99,6 +100,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("nickName", account.getDisplayName());
                     intent.putExtra("photoUrl", account.getPhotoUrl().toString());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);//액티비티 스택제거
                     startActivity(intent);
                 } else {
                     Toast.makeText(SignInActivity.this, "로그인 실패",Toast.LENGTH_SHORT).show();
