@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.example.oodp_tp_app.adapter.ProjectAdapter;
 import com.example.oodp_tp_app.classes.Leader;
 import com.example.oodp_tp_app.classes.Member;
 import com.example.oodp_tp_app.classes.Project;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_name;
     private ImageView iv_profile;
     private Toolbar toolbar;
+    private Button btn_project_add;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -68,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
         tv_name = findViewById(R.id.user_name);
         tv_name.setText(nickName);
         iv_profile = findViewById(R.id.user_photo);
+        btn_project_add = findViewById(R.id.btn_project_add);
+        btn_project_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TaskCreateActivity.class);
+                intent.setFlags(intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+            }
+        });
         Glide.with(this).load(photoUrl).into(iv_profile);
 
         recyclerView = findViewById(R.id.project_view);
