@@ -23,12 +23,12 @@ public class TaskCreateActivity extends AppCompatActivity {
         btn = findViewById(R.id.btn_task_add);
 
         Intent intent = getIntent();
-
-        if (intent.getStringExtra("mode") == "project"){
-            et.setText("Project Name");
+        String mode = intent.getStringExtra("mode");
+        if (mode.compareTo("project") == 0 ){
+            et.setHint("Project Name");
 
         } else {
-            et.setText("Create Name");
+            et.setHint("Task Name");
         }
 
 
@@ -36,11 +36,10 @@ public class TaskCreateActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (intent.getStringExtra("mode") == "project"){
-                    Intent intent = new Intent(getApplicationContext(), TaskCreateActivity.class);
-
+                if (mode.compareTo("project") == 0){
+                    finish();
                 } else {
-                    et.setText("Create Name");
+                    finish();
                 }
             }
         });
