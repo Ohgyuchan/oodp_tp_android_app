@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        projectCollection.whereArrayContains("members", currentUser.getUid()).get().addOnCompleteListener(task -> {
+        projectCollection.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 for(QueryDocumentSnapshot projectSnapshot : task.getResult()) {
 
@@ -118,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new ProjectAdapter(projects, this);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
