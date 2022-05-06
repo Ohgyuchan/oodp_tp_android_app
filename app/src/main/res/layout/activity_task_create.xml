@@ -7,4 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".activity.TaskCreateActivity">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  <EditText
+      android:id="@+id/et_task_name"
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      android:layout_margin="10dp"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:text="Task Name"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.842"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.311" />
+
+  <Button
+      android:id="@+id/btn_task_add"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="완료"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.498"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+      app:layout_constraintVertical_bias="0.131" />
+</androidx.constraintlayout.widget.ConstraintLayout>

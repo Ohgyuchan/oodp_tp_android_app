@@ -10,28 +10,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_project_name"
+            android:id="@+id/tv_task_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="프로젝트1"
             android:textAlignment="center"
             android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/tv_leader_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="오규찬"
-            android:textAlignment="center"
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/tv_member_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3명"
-            android:textAlignment="center"
-            android:textSize="15dp" />
 
     </LinearLayout>
 
