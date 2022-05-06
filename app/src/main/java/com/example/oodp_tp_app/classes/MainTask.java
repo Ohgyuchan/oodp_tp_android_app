@@ -3,8 +3,8 @@ package com.example.oodp_tp_app.classes;
 import java.util.ArrayList;
 
 public class MainTask extends Task{
-    private ArrayList<SubTask> subTasks;
-    private ArrayList<Meeting> meetings;
+//    private ArrayList<SubTask> subTasks;
+//    private ArrayList<Meeting> meetings;
 
 
 

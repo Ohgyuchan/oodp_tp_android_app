@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -96,104 +98,10 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-//        projectCollection.whereArrayContains("members", currentUser.getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public synchronized void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                if(error != null) {
-//                    Log.w("ProjectREAD", "Listen failed", error);
-//                    return;
-//                }
-//                Leader leader = new Leader();
-//                ArrayList<Member> members = new ArrayList<>();
-//                for(QueryDocumentSnapshot projectSnapshot : value) {
-//                    synchronized (this) {
-//
-//                        if (projectSnapshot.get("projectName") != null) {
-//                            userCollection.document((String) projectSnapshot.get("leader")).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//                                @Override
-//                                public synchronized void onEvent(@Nullable DocumentSnapshot leaderSnapshot, @Nullable FirebaseFirestoreException error) {
-//                                    if (error != null) {
-//                                        Log.w("LeaderREAD", "Listen failed", error);
-//                                        return;
-//                                    }
-//                                    if (leaderSnapshot != null && leaderSnapshot.exists()) {
-//                                        Leader kLeader = new Leader(leaderSnapshot.getId(), (String) leaderSnapshot.get("email"), (String) leaderSnapshot.get("displayName"), (String) leaderSnapshot.get("photoUrl"));
-//                                        leader.setUid(kLeader.getUid());
-//                                        leader.setEmail(kLeader.getEmail());
-//                                        leader.setPhotoUrl(kLeader.getPhotoUrl());
-//                                        leader.setDisplayName(kLeader.getDisplayName());
-//                                        Log.d("Leader Read", leader.getDisplayName() + " => " + leader.getUid());
-//                                    } else {
-//                                        Log.d("LeaderREAD", "Current data: null");
-//                                    }
-//                                }
-//                            });
-//                            userCollection.whereArrayContains("projects", projectSnapshot.getId()).addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                                @Override
-//                                public synchronized void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                                    if (error != null) {
-//                                        Log.w("MemberREAD", "Listen failed", error);
-//                                        return;
-//                                    }
-//                                    for (QueryDocumentSnapshot memberSnapshot : value) {
-//                                        if (memberSnapshot.get("uid") != null) {
-//                                            Member member = new Member(memberSnapshot.getId(), (String) memberSnapshot.get("email"), (String) memberSnapshot.get("displayName"), (String) memberSnapshot.get("photoUrl"));
-//                                            members.add(member);
-//                                        }
-//                                        Log.d("Member Read", members + " => " + members.size());
-//                                    }
-//                                }
-//                            });
-//                        }
-//                        try {
-//                            Thread.sleep(3000);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        Project project = new Project(projectSnapshot.getId(), (String) projectSnapshot.get("projectName"), members, leader);
-//                        projects.add(project);
-//                    }
-//                    adapter.notifyDataSetChanged();
-//                }
-//                Log.d("Project", "Current pr in Projects: " + projects);
-//            }
-//
-//        });
 
-
-        projectCollection.whereArrayContains("members", currentUser.getUid()).get().addOnCompleteListener(task -> {
+        projectCollection.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 for(QueryDocumentSnapshot projectSnapshot : task.getResult()) {
-//                    Leader leader = new Leader();
-//                    ArrayList<Member> members = new ArrayList<>();
-//                    userCollection.document((String) projectSnapshot.get("leader")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                        @Override
-//                        public void onSuccess(DocumentSnapshot leaderSnapshot) {
-//                                Leader kLeader = new Leader(leaderSnapshot.getId(), (String) leaderSnapshot.get("email"), (String) leaderSnapshot.get("displayName"), (String) leaderSnapshot.get("photoUrl"));
-//                                leader.setUid(kLeader.getUid());
-//                                leader.setEmail(kLeader.getEmail());
-//                                leader.setPhotoUrl(kLeader.getPhotoUrl());
-//                                leader.setDisplayName(kLeader.getDisplayName());
-//                                Log.d("Leader Read", leader.getDisplayName() + " => " + leader.getUid());
-//
-//                        }
-//                    });
-//                    userCollection.whereArrayContains("projects", projectSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public synchronized void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            if(task.isSuccessful()) {
-//                                for (QueryDocumentSnapshot memberSnapshot : task.getResult()) {
-//                                    Member member = new Member(memberSnapshot.getId(), (String) memberSnapshot.get("email"), (String) memberSnapshot.get("displayName"), (String) memberSnapshot.get("photoUrl"));
-//                                    members.add(member);
-//                                    Log.d("Member Read", members + " => " + members.size());
-//                                }
-//
-//                            } else {
-//                                Log.d("Members Read", "Error getting documents: ", task.getException());
-//                            }
-//                        }
-//                    });
 
                     Project project = projectSnapshot.toObject(Project.class);
                     projects.add(project);
@@ -212,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new ProjectAdapter(projects, this);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override

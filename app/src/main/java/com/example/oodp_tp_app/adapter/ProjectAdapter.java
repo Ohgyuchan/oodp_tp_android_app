@@ -1,6 +1,7 @@
 package com.example.oodp_tp_app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oodp_tp_app.R;
+import com.example.oodp_tp_app.activity.ProjectDetail;
+import com.example.oodp_tp_app.activity.TaskCreateActivity;
 import com.example.oodp_tp_app.classes.Project;
 import com.example.oodp_tp_app.classes.Member;
 
@@ -38,6 +41,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         holder.tv_project_name.setText(projects.get(position).getProjectName());
         holder.tv_leader_name.setText(projects.get(position).getLeader().getDisplayName());
         holder.tv_member_count.setText(String.valueOf(projects.get(position).getMembersCount()));
+        holder.projectId = projects.get(position).getProjectId();
     }
 
     @Override
@@ -49,6 +53,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         TextView tv_project_name;
         TextView tv_leader_name;
         TextView tv_member_count;
+        String projectId;
 
         public ProjectViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,6 +61,15 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             this.tv_leader_name = itemView.findViewById(R.id.tv_leader_name);
             this.tv_member_count = itemView.findViewById(R.id.tv_member_count);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context.getApplicationContext(), ProjectDetail.class);
+                    intent.putExtra("projectName", tv_project_name.getText().toString());
+                    intent.putExtra("projectId", projectId);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }
