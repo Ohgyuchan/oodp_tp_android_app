@@ -6,6 +6,8 @@ public class MainTask extends Task{
     private ArrayList<SubTask> subTasks;
     private ArrayList<Meeting> meetings;
 
+
+
     public MainTask() {
     }
 

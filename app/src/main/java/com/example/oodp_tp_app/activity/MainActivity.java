@@ -72,11 +72,12 @@ public class MainActivity extends AppCompatActivity {
         tv_name = findViewById(R.id.user_name);
         tv_name.setText(nickName);
         iv_profile = findViewById(R.id.user_photo);
-        btn_project_add = findViewById(R.id.btn_project_add);
+        btn_project_add = findViewById(R.id.btn_project_create);
         btn_project_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TaskCreateActivity.class);
+                intent.putExtra("mode", "project");
                 intent.setFlags(intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
